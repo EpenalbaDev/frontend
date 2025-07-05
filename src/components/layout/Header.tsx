@@ -1,4 +1,4 @@
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Bell } from "lucide-react";
 
 export function Header() {
@@ -11,8 +11,8 @@ export function Header() {
           <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
         </button>
         <Avatar>
-          <Avatar.Image src="/avatar.png" alt="User" />
-          <Avatar.Fallback>U</Avatar.Fallback>
+          <AvatarImage src="/avatar.png" alt="User" />
+          <AvatarFallback>U</AvatarFallback>
         </Avatar>
       </div>
     </header>

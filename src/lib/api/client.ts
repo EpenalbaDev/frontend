@@ -6,7 +6,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Interceptor para agregar el token JWT si existe
+// Interceptor para agregar el token JWT si existe http://0.0.0.0:8000 http://69.62.67.197:8000/api
 api.interceptors.request.use((config) => {
   const token = Cookies.get("access_token");
   if (token) {

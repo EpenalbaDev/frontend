@@ -16,7 +16,7 @@ export const projectsService = {
   async getProjects(
     pagination: PaginationParams = { page: 1, limit: 10 },
     filters: ProjectFilter = {}
-  ): Promise<PaginatedResponse<ProjectResponse>> {
+  ): Promise<PaginatedResponse<ProjectWithDetails>> {
     const params = new URLSearchParams();
     
     // Add pagination params

@@ -1,6 +1,6 @@
 import useSWR from 'swr';
-import { getTimeEntries } from '@/lib/api';
-import { TimeEntryResponse, TimeEntryFilter, PaginatedResponse, PaginationParams } from '@/types';
+import { getTimeEntries, getTimeSummary, getActiveTimer } from '@/lib/api/timeEntries';
+import { TimeEntryResponse, TimeEntryFilter, TimeSummary, PaginatedResponse, PaginationParams } from '@/types';
 
 interface UseTimeEntriesOptions {
   pagination?: PaginationParams;
@@ -15,6 +15,30 @@ export function useTimeEntries({ pagination = { page: 1, limit: 10 }, filters = 
   return {
     timeEntries: data?.items || [],
     pagination: data,
+    isLoading,
+    isError: !!error,
+    error,
+    mutate,
+  };
+}
+
+export function useTimeSummary() {
+  const { data, error, isLoading, mutate } = useSWR<TimeSummary>('/time-entries/summary', getTimeSummary);
+
+  return {
+    summary: data,
+    isLoading,
+    isError: !!error,
+    error,
+    mutate,
+  };
+}
+
+export function useActiveTimer() {
+  const { data, error, isLoading, mutate } = useSWR<TimeEntryResponse | null>('/time-entries/active-timer', getActiveTimer);
+
+  return {
+    activeTimer: data,
     isLoading,
     isError: !!error,
     error,

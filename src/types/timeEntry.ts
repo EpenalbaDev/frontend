@@ -2,7 +2,7 @@ import { UserResponse } from './user';
 import { ProjectResponse } from './project';
 import { TaskResponse } from './task';
 
-// Time entry base types
+// Time entry types
 export interface TimeEntryBase {
   work_date: string; // ISO date string
   project_id: number;
@@ -11,9 +11,9 @@ export interface TimeEntryBase {
   start_time: string; // HH:mm format
   end_time?: string; // HH:mm format
   rate_per_hour?: number;
-  currency?: string;
+  currency: string;
   comments?: string;
-  is_billable?: boolean;
+  is_billable: boolean;
 }
 
 export interface TimeEntryCreate extends TimeEntryBase {
@@ -46,12 +46,29 @@ export interface TimeEntryResponse extends TimeEntryBase {
 }
 
 export interface TimeEntryWithDetails extends TimeEntryResponse {
-  project_details?: any; // ProjectResponse or simplified object
-  task_details?: any; // TaskResponse or simplified object
-  user_details?: any; // UserResponse or simplified object
+  project_details?: {
+    id: number;
+    name: string;
+    description?: string;
+    client_id: number;
+    is_active: boolean;
+  };
+  task_details?: {
+    id: number;
+    name: string;
+    description?: string;
+    project_id: number;
+    is_active: boolean;
+  };
+  user_details?: {
+    id: number;
+    full_name: string;
+    email: string;
+    is_active: boolean;
+  };
 }
 
-// Time entry filter types
+// Filter types
 export interface TimeEntryFilter {
   project_id?: number;
   task_id?: number;
@@ -76,26 +93,15 @@ export interface TimerStop {
   description?: string;
 }
 
-// Time summary types
+// Summary types
 export interface TimeSummary {
   total_hours_today: number;
   total_hours_week: number;
   total_hours_month: number;
-  active_timer?: TimeEntryResponse;
   billable_hours_today: number;
   billable_hours_week: number;
   billable_hours_month: number;
-}
-
-// Time entry management types
-export interface TimeEntryTableData extends TimeEntryResponse {
-  project_name: string;
-  task_name: string;
-  user_name: string;
-  duration_formatted: string; // e.g., "2h 30m"
-  cost_formatted: string; // e.g., "$150.00"
-  is_running: boolean;
-  status: 'completed' | 'running' | 'paused';
+  active_timer?: TimeEntryResponse;
 }
 
 // Time entry form types
@@ -103,7 +109,7 @@ export interface TimeEntryFormData {
   work_date: string; // ISO date string
   project_id: number;
   task_id: number;
-  description?: string;
+  description: string;
   start_time: string; // HH:mm format
   end_time?: string; // HH:mm format
   rate_per_hour?: number;
@@ -112,25 +118,39 @@ export interface TimeEntryFormData {
   is_billable: boolean;
 }
 
-// Time tracking statistics
-export interface TimeTrackingStats {
-  total_hours_today: number;
-  total_hours_week: number;
-  total_hours_month: number;
-  billable_hours_today: number;
-  billable_hours_week: number;
-  billable_hours_month: number;
-  total_cost_today: number;
-  total_cost_week: number;
-  total_cost_month: number;
-  active_timers_count: number;
-  projects_worked_today: number;
-  tasks_worked_today: number;
+// Time entry table data
+export interface TimeEntryTableData extends TimeEntryResponse {
+  duration_formatted?: string;
+  cost_formatted?: string;
+  is_running?: boolean;
+  can_edit?: boolean;
+  can_delete?: boolean;
 }
 
-// Time entry with extended information
-export interface TimeEntryWithStats extends TimeEntryWithDetails {
-  stats: TimeTrackingStats;
+// Time tracking statistics
+export interface TimeTrackingStats {
+  total_entries: number;
+  total_hours: number;
+  total_cost: number;
+  average_hours_per_day: number;
+  most_active_project?: {
+    id: number;
+    name: string;
+    hours: number;
+  };
+  most_active_task?: {
+    id: number;
+    name: string;
+    hours: number;
+  };
+}
+
+// Timer state
+export interface TimerState {
+  is_running: boolean;
+  active_timer?: TimeEntryResponse;
+  elapsed_time?: number; // seconds
+  start_time?: Date;
 }
 
 // Time entry bulk operations

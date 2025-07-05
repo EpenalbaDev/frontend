@@ -1,11 +1,23 @@
-import Image from "next/image";
+"use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export default function Home() {
-  return (
-    <section className="flex flex-col items-center justify-center h-full">
-      <h1 className="text-3xl font-bold mb-4">Bienvenido a Project Manager</h1>
-      <p className="mb-6">Gestión moderna de proyectos y equipos.</p>
-      <a href="/(auth)/login" className="btn btn-primary">Iniciar sesión</a>
-    </section>
-  );
+  const { user, isLoading } = useCurrentUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      router.replace("/dashboard");
+    } else if (!isLoading && !user) {
+      router.replace("/login");
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading) {
+    return <div className="flex items-center justify-center h-screen">Cargando...</div>;
+  }
+
+  return null;
 }

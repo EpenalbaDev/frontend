@@ -7,6 +7,7 @@ import {
   PaginationParams,
   FilterParams
 } from "@/types";
+import { useDashboardMetrics } from "@/hooks/useDashboardMetrics";
 
 // Clients service
 export const clientsService = {

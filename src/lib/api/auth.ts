@@ -12,7 +12,12 @@ import {
 export const authService = {
   // Login user
   async login(credentials: UserLogin): Promise<Token> {
-    const response = await api.post("/auth/login", credentials);
+    const params = new URLSearchParams();
+    params.append("username", credentials.username);
+    params.append("password", credentials.password);
+    const response = await api.post("/auth/login", params, {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    });
     const { access_token, refresh_token } = response.data;
     
     // Store tokens in cookies
@@ -26,7 +31,7 @@ export const authService = {
   async loginJson(credentials: UserLogin): Promise<Token> {
     const response = await api.post("/auth/login-json", credentials);
     const { access_token, refresh_token } = response.data;
-    
+    debugger;
     // Store tokens in cookies
     Cookies.set("access_token", access_token, { expires: 1 });
     Cookies.set("refresh_token", refresh_token, { expires: 7 });
@@ -101,3 +106,5 @@ export const getCurrentUser = authService.getCurrentUser;
 export const logout = authService.logout;
 export const refreshToken = authService.refreshToken;
 export const isAuthenticated = authService.isAuthenticated; 
+
+// Remove the setErrorMsg line from here 

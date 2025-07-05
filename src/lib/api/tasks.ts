@@ -19,7 +19,7 @@ export const tasksService = {
   async getTasks(
     pagination: PaginationParams = { page: 1, limit: 10 },
     filters: TaskFilter = {}
-  ): Promise<PaginatedResponse<TaskResponse>> {
+  ): Promise<PaginatedResponse<TaskWithDetails>> {
     const params = new URLSearchParams();
     
     // Add pagination params

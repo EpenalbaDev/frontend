@@ -26,12 +26,12 @@ export const timeEntriesService = {
     params.append("limit", pagination.limit?.toString() || "10");
     
     // Add filter params
-    if (filters.search) params.append("search", filters.search);
     if (filters.project_id) params.append("project_id", filters.project_id.toString());
     if (filters.task_id) params.append("task_id", filters.task_id.toString());
     if (filters.user_id) params.append("user_id", filters.user_id.toString());
     if (filters.date_from) params.append("date_from", filters.date_from);
     if (filters.date_to) params.append("date_to", filters.date_to);
+    if (filters.search) params.append("search", filters.search);
     if (filters.is_billable !== undefined) params.append("is_billable", filters.is_billable.toString());
     if (filters.is_running !== undefined) params.append("is_running", filters.is_running.toString());
     
@@ -74,13 +74,13 @@ export const timeEntriesService = {
     return response.data;
   },
 
-  // Start timer
+  // Start a new timer
   async startTimer(timerData: TimerStart): Promise<TimeEntryResponse> {
     const response = await api.post("/time-entries/start-timer", timerData);
     return response.data;
   },
 
-  // Stop timer
+  // Stop the active timer
   async stopTimer(timerData: TimerStop): Promise<TimeEntryResponse> {
     const response = await api.post("/time-entries/stop-timer", timerData);
     return response.data;
